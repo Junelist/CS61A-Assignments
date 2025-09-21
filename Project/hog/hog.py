@@ -368,7 +368,6 @@ def final_strategy(score, opponent_score):
     num_6 = sum / 100
     num_0 = boar_brawl(score, opponent_score)
     
-    print('DEBUG:', 'num_6:', num_6, 'num_0:', num_0)
     if num_0 >= num_6:
         return 0
     else:
