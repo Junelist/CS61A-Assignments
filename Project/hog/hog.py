@@ -23,7 +23,19 @@ def roll_dice(num_rolls, dice=six_sided):
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
     # END PROBLEM 1
-
+    i = 0
+    sum = 0
+    sowsad = False
+    while i < num_rolls:
+        number = dice()
+        if number == 1:
+            sowsad = True
+        sum += number
+        i += 1
+    if sowsad:
+        return 1
+    else:
+        return sum
 
 def boar_brawl(player_score, opponent_score):
     """Return the points scored by rolling 0 dice according to Boar Brawl.
@@ -35,6 +47,8 @@ def boar_brawl(player_score, opponent_score):
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
     # END PROBLEM 2
+    plus = abs(opponent_score // 10 % 10 - player_score % 10) * 3
+    return plus if plus > 1 else 1
 
 
 def take_turn(num_rolls, player_score, opponent_score, dice=six_sided):
@@ -53,6 +67,9 @@ def take_turn(num_rolls, player_score, opponent_score, dice=six_sided):
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
     # END PROBLEM 3
+    if num_rolls == 0:
+        return boar_brawl(player_score, opponent_score)
+    return roll_dice(num_rolls, dice)
 
 
 def simple_update(num_rolls, player_score, opponent_score, dice=six_sided):
@@ -78,12 +95,26 @@ def num_factors(n):
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
     # END PROBLEM 4
+    num = 0
+    i = 1
+    while i <= n:
+        if n % i == 0:
+            num += 1
+        i += 1
+    return num
 
 def sus_points(score):
     """Return the new score of a player taking into account the Sus Fuss rule."""
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
     # END PROBLEM 4
+    factors = num_factors(score)
+    if factors == 3 or factors == 4:
+        while(True):
+            score += 1
+            if is_prime(score):
+                break
+    return score
 
 def sus_update(num_rolls, player_score, opponent_score, dice=six_sided):
     """Return the total score of a player who starts their turn with
@@ -91,7 +122,8 @@ def sus_update(num_rolls, player_score, opponent_score, dice=six_sided):
     """
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
-    # END PROBLEM 4
+    # END PROBLEM #
+    return sus_points(simple_update(num_rolls, player_score, opponent_score, dice))
 
 
 def always_roll_5(score, opponent_score):
@@ -131,6 +163,14 @@ def play(strategy0, strategy1, update,
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
     # END PROBLEM 5
+    while score0 < goal and score1 < goal:
+        if who == 0:
+            num_rolls = strategy0(score0, score1)
+            score0 = update(num_rolls, score0, score1, dice)
+        else:
+            num_rolls = strategy1(score1, score0)
+            score1 = update(num_rolls, score1, score0, dice)
+        who = 1 - who
     return score0, score1
 
 
