@@ -363,11 +363,12 @@ def final_strategy(score, opponent_score):
     i = 0
     sum = 0
     while i < 100:  
-        sum += sus_update(6, score, opponent_score)
+        sum += take_turn(6, score, opponent_score)
         i += 1
     num_6 = sum / 100
     num_0 = boar_brawl(score, opponent_score)
     
+    print('DEBUG:', 'num_6:', num_6, 'num_0:', num_0)
     if num_0 >= num_6:
         return 0
     else:
